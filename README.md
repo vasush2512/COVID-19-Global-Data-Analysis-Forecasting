@@ -14,6 +14,7 @@ End-to-end data pipeline that analyses **2M+ records** of WHO COVID-19 data acro
 
 ```
 covid_project/
+```
 ├── config.py            ← Central config (URLs, countries, model params)
 ├── etl_pipeline.py      ← Automated ETL: fetch → clean → save
 ├── analysis.py          ← CFR, peaks, regional burden, wave detection
@@ -178,3 +179,7 @@ python run_project.py
 - `GET /api/runs` - list recent runs
 - `GET /api/runs/{run_id}` - fetch one run with top-CFR and forecast points
 - `GET /api/runs/{run_id}/dashboard` - fetch stored dashboard image for a run
+=======
+# COVID-19-Global-Data-Analysis-Forecasting
+Developed an end-to-end COVID-19 intelligence platform using Python, Pandas, NumPy, SciPy, FastAPI, and SQLite. The system automates data ingestion, performs large-scale analysis on 2M+ records, forecasts trends with ARIMA, and generates dashboard-driven insights across 50+ countries.
+>>>>>>> origin/main

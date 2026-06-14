@@ -1,4 +1,4 @@
-# Python artifacts
+﻿# Python artifacts
 __pycache__/
 *.py[cod]
 *.pyo
@@ -6,14 +6,45 @@ __pycache__/
 
 # Virtual environments
 .venv/
+env/
+venv/
+ENV/
 
 # Database files
 *.db
+covid_backend.db
 
 # Output and generated files
 outputs/
+
+# Logs
 *.log
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Python build / packaging
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+*.whl
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Editor directories
+.vscode/
+.idea/
+
+# Misc
+*.swp
+*.swo
+*.tmp
+.env
+
