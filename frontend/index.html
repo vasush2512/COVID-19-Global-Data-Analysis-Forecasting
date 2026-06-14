@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COVID-19 Global Analytics Platform</title>
+  <link rel="stylesheet" href="/frontend/styles.css" />
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="header-content">
+      <div class="header-brand">
+        <div class="brand-icon">📊</div>
+        <div class="brand-text">
+          <h1>COVID Analytics</h1>
+          <p>Global Intelligence Platform</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="status-indicator online"></span>
+        <span class="header-time" id="headerTime"></span>
+        <button id="themeToggleHeader" type="button" class="btn btn-outline btn-sm theme-toggle-button"
+          aria-label="Toggle theme">Dark Mode</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <main class="app-main" id="appRoot">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <h2>Forecasting & Regional Intelligence</h2>
+          <p>Real-time analysis of COVID-19 trends across 50+ countries with interactive insights and predictive
+            dashboards.</p>
+        </div>
+        <div class="hero-stats">
+          <button id="statTrackedCountries" type="button" class="stat-card stat-button">
+            <span id="trackedCountriesValue">50+</span>
+            <p>Tracked Countries</p>
+          </button>
+          <button id="statForecastHorizon" type="button" class="stat-card stat-button">
+            <span id="forecastHorizonValue">90d</span>
+            <p>Forecast Horizon</p>
+          </button>
+          <button id="statForecastRuns" type="button" class="stat-card stat-button">
+            <span id="forecastRunsValue">100+</span>
+            <p>Forecast Runs</p>
+          </button>
+          <button id="statLiveAnalytics" type="button" class="stat-card stat-button">
+            <span id="liveAnalyticsValue">Fast</span>
+            <p>Live analytics</p>
+          </button>
+        </div>
+      </section>
+
+      <!-- Pipeline Control Section -->
+      <section class="control-section">
+        <div class="card elevated">
+          <div class="card-header">
+            <h3>Launch Analysis Pipeline</h3>
+            <span class="card-subtitle">Configure and run the COVID analysis model</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="country">Country</label>
+              <select id="country" class="input-modern">
+                <option>Loading countries...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="horizon">Forecast Horizon (days)</label>
+              <input id="horizon" type="number" value="30" min="7" max="90" class="input-modern" />
+              <span class="help-text">7-90 days</span>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input id="withDashboard" type="checkbox" />
+                <span>Generate visual dashboard</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button id="runBtn" class="btn btn-primary btn-lg">
+              <span class="btn-icon">▶</span> Run Pipeline
+            </button>
+            <button id="cancelBtn" class="btn btn-secondary btn-lg" disabled>
+              <span class="btn-icon">✕</span> Cancel
+            </button>
+          </div>
+
+          <div id="runStatus" class="status-message"></div>
+        </div>
+      </section>
+
+      <!-- Recent Runs Section -->
+      <section class="runs-section">
+        <div class="card elevated">
+          <div class="card-header with-action">
+            <div>
+              <h3>Recent Analysis Runs</h3>
+              <span class="card-subtitle">Last 20 executions</span>
+            </div>
+            <div class="actions-group">
+              <button id="refreshBtn" type="button" class="btn btn-outline btn-sm">
+                <span class="btn-icon">↻</span> Refresh
+              </button>
+              <div class="more-menu">
+                <button id="moreBtn" type="button" class="btn btn-outline btn-sm">More ▾</button>
+                <div id="moreOptions" class="more-options hidden">
+                  <button id="exportCsv" type="button" class="btn btn-sm">Export CSV</button>
+                  <label class="menu-toggle"><input id="autoRefresh" type="checkbox" /> Auto-refresh</label>
+                  <button id="toggleTheme" type="button" class="btn btn-sm">Toggle Theme</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="col-id">ID</th>
+                  <th class="col-created">Created</th>
+                  <th class="col-status">Status</th>
+                  <th class="col-country">Country</th>
+                  <th class="col-horizon">Horizon</th>
+                  <th class="col-metric">MAPE</th>
+                  <th class="col-metric">RMSE</th>
+                  <th class="col-metric">MAE</th>
+                </tr>
+              </thead>
+              <tbody id="runsBody">
+                <tr>
+                  <td colspan="8" class="empty-state">Loading runs...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Assistant -->
+      <section class="assistant-section">
+        <div class="card elevated">
+          <div class="card-header with-action">
+            <div>
+              <h3>AI Assistant</h3>
+              <span class="card-subtitle">Ask about recent runs and forecasts</span>
+            </div>
+            <button id="indexDocsBtn" type="button" class="btn btn-outline btn-sm">Index Runs</button>
+          </div>
+
+          <div class="assistant-body">
+            <div id="assistantHistory" class="assistant-history">
+              <div class="assistant-empty">Ask a question to explore the latest analysis results.</div>
+            </div>
+            <div class="assistant-input-row">
+              <textarea id="assistantQuestion" placeholder="Type your question here..." rows="2"></textarea>
+              <button id="assistantSend" type="button" class="btn btn-primary">Ask</button>
+            </div>
+            <div class="assistant-samples">
+              <span>Try asking:</span>
+              <button type="button" class="btn btn-sm sample-question">What was the latest run's MAPE?</button>
+              <button type="button" class="btn btn-sm sample-question">Which country had the highest CFR?</button>
+              <button type="button" class="btn btn-sm sample-question">Summarize the most recent forecast.</button>
+            </div>
+            <div id="assistantContexts" class="assistant-contexts hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Details Section -->
+      <section class="details-section">
+        <div class="card elevated">
+          <div class="card-header">
+            <h3 id="detailHeader">Run Details</h3>
+            <span class="card-subtitle" id="detailSubtitle">Click a run ID to view detailed results</span>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-card">
+              <h4>Top CFR Countries</h4>
+              <div class="table-wrapper">
+                <table class="data-table compact">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Country</th>
+                      <th>CFR%</th>
+                      <th>Cases</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cfrBody">
+                    <tr>
+                      <td colspan="4" class="empty-state">No data</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <h4>Forecast Preview (15 rows)</h4>
+              <div class="table-wrapper">
+                <table class="data-table compact">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Value</th>
+                      <th>Lower</th>
+                      <th>Upper</th>
+                    </tr>
+                  </thead>
+                  <tbody id="forecastBody">
+                    <tr>
+                      <td colspan="4" class="empty-state">No data</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-container">
+            <img id="dashImg" alt="Dashboard visualization" class="dashboard-image" />
+            <div id="dashPlaceholder" class="dash-placeholder hidden">No dashboard available</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <p>COVID-19 Global Analytics Platform • Real-time Data Analysis & Forecasting</p>
+  </footer>
+
+  <script src="/frontend/app.js"></script>
+</body>
+
+</html>
